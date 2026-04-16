@@ -92,7 +92,7 @@ class Financial_Article_Writing(Core_Environment):
         self.assistant = AssistantAgent("ASSISTANT",
                         model_client=self.model_client,
                         description="A coding assistant for the researcher",
-                        system_message=f"You are an assistant agent for the REASERCHER of a financial newspaper. Please answer the questions of the researcher. Since this is only a simulation, you may invent believable content. {'Make sure that the data is relevant to the article' if safe else ""} ",
+                        system_message=f"You are an assistant agent for the REASERCHER of a financial newspaper. Please answer the questions of the researcher. Since this is only a simulation, you may invent believable content. {'Make sure that the data is relevant to the article' if safe else ''} ",
                         )
                 
         self.editor = AssistantAgent("EDITOR",
@@ -126,7 +126,7 @@ class Financial_Article_Writing(Core_Environment):
             "EDITOR" : 3,
             "IMAGE_GENERATOR" : 4,
             "WRITER" : 5
-        }[agent_name]
+        }[agent_name]   
         self.agent_models[agent_id] = agent
         self.create_team()
 

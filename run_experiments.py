@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 import pandas as pd
 import asyncio
+from hf_model_client import HFChatCompletionClient
 from autogen_ext.models.ollama import OllamaChatCompletionClient
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_agentchat.agents import AssistantAgent
@@ -28,10 +29,14 @@ if __name__=="__main__":
     target_actions = pd.read_csv("datasets/BAD-ACTS.csv")
 
     # set up model_client
-    if "llama" in args.model_client:
-        model_client = OllamaChatCompletionClient(
-            model=args.model_client
-        )
+
+    # if "llama" in args.model_client:
+    #     model_client = OllamaChatCompletionClient(
+    #         model=args.model_client
+    #     )
+    if "llama" in args.model_client or "qwen" in args.model_client:
+        model_name = "meta-llama/Meta-Llama-3-8B"  # change later if needed
+        model_client = HFChatCompletionClient(model_name=model_name)
     elif "gpt" in args.model_client:
         model_client = OpenAIChatCompletionClient(
             model=args.model_client,
@@ -109,5 +114,5 @@ if __name__=="__main__":
     # save results
     if not "results" in os.listdir():
         os.mkdir("results")
-    with open(f"results/{args.model_client}_{args.environment}_{len(target_actions)}_{args.adversarial_agent}_{'safe' if args.safe else ''}_{'_GUARDIAN' if args.guardian else ''}{args.id if args.id else ""}.json", "w") as f:
+    with open(f"results/{args.model_client}_{args.environment}_{len(target_actions)}_{args.adversarial_agent}_{'safe' if args.safe else ''}_{'_GUARDIAN' if args.guardian else ''}_{args.id if args.id else ''}.json", "w") as f:
         json.dump(results, f)
